@@ -9,7 +9,6 @@ public class FindMatches : MonoBehaviour
     private Board gameBoard;
     public List<GameObject> currentMatches = new List<GameObject>();
 
-    // Use this for initialization
     void Start()
     {
         gameBoard = FindObjectOfType<Board>();

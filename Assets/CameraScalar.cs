@@ -11,7 +11,7 @@ public class CameraScalar : MonoBehaviour
     public float padding = 2;
     public float yOffset = 1;
 
-    // Use this for initialization
+
     void Start()
     {
         board = FindObjectOfType<Board>();

@@ -17,8 +17,8 @@ public class LevelManager : MonoBehaviour
     public int gunCounter;
     public int panCounter;
     public int tomatoCounter;
-    public int totalItems; // Toplam nesne sayýsý
-    public int collectedItems; // Toplanan nesne sayýsý
+    public int totalItems; 
+    public int collectedItems; 
     public Board gameBoard;
 
 
