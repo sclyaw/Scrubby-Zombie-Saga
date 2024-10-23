@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Dot : MonoBehaviour
 {
-
+    public int deneme;
     
     public int xAll;
     public int yAll;
@@ -67,7 +67,7 @@ public class Dot : MonoBehaviour
                     {
                         tempPosition = new Vector2(targetX, transform.position.y);
                         transform.position = Vector2.Lerp(transform.position, tempPosition, .6f);
-                        if (xAll <= gameBoard.width && yAll <= gameBoard.height)
+                        if (xAll < gameBoard.width && yAll < gameBoard.height)
                         {
                             if (gameBoard.allPieces[xAll, yAll] != this.gameObject)
                             {
@@ -87,11 +87,17 @@ public class Dot : MonoBehaviour
                     {
                         tempPosition = new Vector2(transform.position.x, targetY);
                         transform.position = Vector2.Lerp(transform.position, tempPosition, .6f);
-                        if (gameBoard.allPieces[xAll, yAll] != this.gameObject)
+
+                        if(xAll < gameBoard.width && yAll < gameBoard.height)
                         {
-                            gameBoard.allPieces[xAll, yAll] = this.gameObject;
+                            if (gameBoard.allPieces[xAll, yAll] != this.gameObject)
+                            {
+                                gameBoard.allPieces[xAll, yAll] = this.gameObject;
+                            }
+                            
                         }
                         findMatches.FindAllMatches();
+
                     }
                     else
                     {
@@ -211,10 +217,31 @@ public class Dot : MonoBehaviour
 
                                 if (isVerticalDrag || isHorizontalDrag)
                                 {
-                                    isHorizontalDrag = false;
-                                    isVerticalDrag = false;
 
-                                    foreach (GameObject component in gameBoard.allPieces)
+                                    if (isVerticalDrag)
+                                    {
+                                        foreach (GameObject component in gameBoard.allPieces)
+                                        {
+                                            if (component.GetComponent<Dot>().xAll == selectedObject.xAll && selectedOnesList.Count < gameBoard.height)
+                                            {
+                                                selectedOnesList.Add(component);
+                                            }
+                                        }
+                                    }
+                                    else if (isHorizontalDrag)
+                                    {
+                                        foreach (GameObject component in gameBoard.allPieces)
+                                        {
+                                            if (component.GetComponent<Dot>().yAll == selectedObject.yAll && selectedOnesList.Count < gameBoard.width)
+                                            {
+                                                selectedOnesList.Add(component);
+                                            }
+                                        }
+                                    }
+                                        
+
+
+                                    foreach (GameObject component in selectedOnesList)
                                     {
                                         if ((Mathf.RoundToInt(component.transform.position.x)) < 0) 
                                         {
@@ -243,19 +270,19 @@ public class Dot : MonoBehaviour
                                         }
                                     }
 
-                                    foreach (GameObject component in gameBoard.allPieces)
-                                    {
-                                        if (component.GetComponent<Dot>().yAll == selectedObject.yAll && selectedOnesList.Count < gameBoard.width)
-                                        {
-                                            selectedOnesList.Add(component);
-                                        }
-                                    }
 
-                                    FindMatches();
+                                   
+                                    
+                                    
+
+                                    isHorizontalDrag = false;
+                                    isVerticalDrag = false;
+
+                                    
                                     StartCoroutine(CheckMoveCo());
                                 }
                             }
-                            isDragging = false; // Dragging bitince sýfýrla
+                            isDragging = false; 
                             break;
                     }
                 }
@@ -271,7 +298,8 @@ public class Dot : MonoBehaviour
 
     public IEnumerator CheckMoveCo()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(0.5f);
+        
 
         bool BoardMatchCheckerBool = false;
         if (selectedOnesList.Count > 0) {
@@ -303,14 +331,19 @@ public class Dot : MonoBehaviour
                     }
                     
 
+
                 }
+                yield return new WaitForSeconds(0.5f);
+                selectedOnesList.Clear();
                 gameBoard.currentState = GameState.move;
 
 
             }
             else
             {
+
                 gameBoard.DestroyMatches();
+                selectedOnesList.Clear();
             }
         }     
     }

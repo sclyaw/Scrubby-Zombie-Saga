@@ -135,9 +135,12 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        
         findMatches.currentMatches.Clear();
         StartCoroutine(DecreaseRowCo());
     }
+
+   
 
     private IEnumerator DecreaseRowCo()
     {
@@ -145,21 +148,27 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+               
                 if (allPieces[i, j] == null)
-                { 
+                {
+                   
                     for (int k = j + 1; k < height; k++)
                     {
+                        
                         if (allPieces[i, k] != null)
                         {
-                            allPieces[i, k].GetComponent<Dot>().yAll = j;               
+                            
+                            allPieces[i, k].GetComponent<Dot>().yAll = j;
+                           
                             allPieces[i, k] = null;
+                           
                             break;
                         }
                     }
                 }
             }
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.25f);
         StartCoroutine(FillBoardCo());
     }
 
@@ -215,19 +224,20 @@ public class Board : MonoBehaviour
     }
     private IEnumerator FillBoardCo()
     {
-        yield return new WaitForSeconds(0.3f);
+        
         RefillBoard();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
 
         while (MatchesOnBoard())
         {
             
             DestroyMatches();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(1f);
 
         }
         findMatches.currentMatches.Clear();      
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
+        
         currentState = GameState.move;  
     }
 }
